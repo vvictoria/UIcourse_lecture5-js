@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script id="info-template" type="text/template">
+		<h3>{{name}}</h3>
+		<p>from {{city}}</p>
+		<p style="color: green">{{info}}</p>
+		<img src="{{src}}"/>
+	</script>
+	<style type="text/css">
+		ul {
+			list-style: none;
+			padding: 0;
+		}
+		li {
+			border: 1px solid black;
+			text-align: center;
+			background-color: SlateBlue;
+			color: white;
+			font-weight: bold;
+  			height: 4em;
+ 			line-height: 4em;
+ 			margin: 10px;
+		}
+		td {
+			vertical-align: top;
+			padding: 20px;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<tr>
+			<td>
+			<h1>User list</h1>
+				<ul id="userlist">	
+				</ul>
+			</td>
+			<td> <h1>User info</h1>
+				<div id="userinfo">	
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<script>
+		var UserTemplate = function (name, city, info, image) {
+			this.name = name;
+			this.info = info;
+			this.getHTML = function () {
+				var template = document.getElementById('info-template').innerHTML;
+				template = template.replace('{{name}}', name);
+				template = template.replace('{{info}}', info);
+				template = template.replace('{{src}}', image);
+				template = template.replace('{{city}}', city);
+				return template;
+			}
+		};
+		var users = [
+			new UserTemplate ("John", "Washington", "likes bowling", "http://icons.iconarchive.com/icons/iconka/saint-whiskers/256/cat-cupid-love-icon.png"),
+			new UserTemplate ("Pavel", "Minsk", "plays football", "http://icons.iconarchive.com/icons/iconka/saint-whiskers/256/cat-food-hearts-icon.png"),
+			new UserTemplate ("Igor", "Krakow", "drinks a lot", "http://icons.iconarchive.com/icons/iconka/meow-2/256/cat-cart-icon.png"),
+		];
+
+		var userlist = document.getElementById('userlist');
+		var userinfo = document.getElementById('userinfo');
+		var current = null;
+
+		users.forEach(function(user, number){
+			console.log(user.name + ": " + user.info);
+			var li = document.createElement("li");
+			li.innerHTML = number + ": " + user.name;
+			userlist.appendChild(li);
+
+			li.onclick = function() {
+				userinfo.innerHTML = user.getHTML();
+
+				if(current) {
+					current.style.backgroundColor = 'SlateBlue';
+				}
+				this.style.backgroundColor = 'Indigo';
+				current = this;
+			}
+		});
+
+	</script>
+</body>
+</html>

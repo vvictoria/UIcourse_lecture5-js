@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div class="root">
+        <div class="a1"></div>
+        <div class="b1">
+            <div class="a2"></div>
+            <div class="b2">
+                <div class="a3"></div>
+            </div>
+            <div class="c2"></div>
+        </div>
+        <div class="c1"></div>
+        <div class="d1">
+            <div class="d2">
+                <div class="b3"></div>
+                <div class="c3"></div>
+                <div class="d3">
+                    <div class="b4" id="the-chosen-one"></div>
+                </div>
+            </div>
+            <div class="e2" id="the-chosen-one"></div>
+            <div class="f2"></div>
+        </div>
+    </div>
+    <script>
+        function traverse (element, idToFind, classToFind, tagToFind) {
+            var found = [];
+            for (var i = 0; i < element.children.length; i++) {
+                var child = element.children[i];
+                if (idToFind && child.id.toLowerCase() == idToFind.toLowerCase()) {
+                    found.push(child);
+
+                } else if (classToFind && child.className.toLowerCase().indexOf(classToFind.toLowerCase()) != -1) {
+                    found.push(child);
+                } else if (tagToFind && child.tagName.toLowerCase() == tagToFind.toLowerCase()) {
+                    found.push(child);
+                }
+                found = found.concat(traverse(child, idToFind, classToFind, tagToFind));
+            }
+            return found;
+        }
+        console.log(traverse(document.body, 'the-chosen-one'));
+        console.log(traverse(document.body, null, 'd2'));
+        console.log(traverse(document.body, null, null, 'div'));
+        console.log(traverse(document.body, null, null, 'img'));
+
+    </script>
+</body>
+</html>

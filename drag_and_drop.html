@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            padding: 15%;
+        }
+        .wrap {
+            margin: 0 auto;
+            display: inline-block;
+            font-size: 0;
+        }
+        #field1, #field2 {
+            border: 1px solid black;
+            height: 200px;
+            width: 200px;
+            display: inline-block;
+            overflow: hidden;
+        }
+        #movable {
+            background-color: red;
+            height: 50px;
+            width: 50px;          
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function() {
+
+            // DRAG
+            document.getElementById("movable").addEventListener("dragstart", function (ev) {
+                ev.dataTransfer.setData("text", ev.target.id);
+                console.log(ev);
+                ev.dataTransfer.setData("x", ev.layerX);
+                ev.dataTransfer.setData("y", ev.layerY);
+            });
+
+            // MOVE OVER
+            document.getElementById("field1").addEventListener("dragover", function (ev) {
+                ev.preventDefault();
+            });
+            document.getElementById("field2").addEventListener("dragover", function (ev) {
+                ev.preventDefault();
+            });
+
+            // DROP
+            function drop (ev) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                var draggable = document.getElementById(data);
+                ev.target.appendChild(draggable);
+                draggable.style.position = "absolute";
+                console.log(ev.dataTransfer.getData("y"));
+                draggable.style.top = ev.pageY - ev.dataTransfer.getData("y") + "px";
+                draggable.style.left = ev.pageX - ev.dataTransfer.getData("x") + "px";
+            }
+
+            document.getElementById("field1").addEventListener("drop", drop);
+            document.getElementById("field2").addEventListener("drop", drop);     
+        
+        });
+
+        // ...
+
+        // user.firstname = 'Petro';
+        // user.lastname = 'Petrovciv';
+ 
+        // user.setName('Petro Petrovciv');
+        // user.getName();
+ 
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <div id="field1">
+            <div id="movable" draggable="true"></div>
+        </div>
+        <div id="field2">
+        </div>
+    </div>
+</body>
+</html>
